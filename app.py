@@ -6,6 +6,14 @@ st.set_page_config(
     page_icon="🎓",
     layout="wide"
 )
+# Load CSS
+with open("style.css", "r", encoding="utf-8") as f:
+    css = f.read()
+
+st.markdown(
+    f"<style>{css}</style>",
+    unsafe_allow_html=True
+)
 
 #Student Dataframe
 student_df = pd.DataFrame({
@@ -35,8 +43,10 @@ average_score = student_df["Score"].mean()
 average_attendance = student_df["Attendance"].mean()
 low_score_students = student_df[student_df["Score"] < 60].shape[0]
 
+#side bar
 with st.sidebar:
     st.title("EduRisk Menu")
+
     selected_page = st.radio(
         "Select Page",
         ["Home", "Dashboard", "Student Data", "Risk Checker", "About"]
@@ -162,7 +172,7 @@ elif selected_page == "Dashboard":
 
         if len(filtered_df) > 0:
             score_chart = filtered_df.set_index("Student Name")["Score"]
-            st.bar_chart(score_chart)
+            st.bar_chart(score_chart, color="#FF8FC7")
         else:
             st.warning("No data available for score chart.")
 
@@ -172,7 +182,7 @@ elif selected_page == "Dashboard":
 
         if len(filtered_df) > 0:
             risk_count = filtered_df["Risk Level"].value_counts()
-            st.bar_chart(risk_count)
+            st.bar_chart(risk_count, color="#FF8FC7")
         else:
             st.warning("No data available for risk chart.")
 
